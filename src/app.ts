@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import parser from 'koa-bodyparser';
 import { routes } from './routes';
 import winston from 'winston';
+import { PrismaClient } from '@prisma/client';
 
 export class App {
   private readonly port: number;
@@ -13,10 +14,11 @@ export class App {
 
   constructor() {
     dotenv.config();
-    this.port = Number(process.env.PORT || 3000);
+    this.port = Number(process.env.PORT ?? 3000);
     this.koa = new Koa();
     this.configKoa();
     this.configLog();
+    this.configPrisma();
   }
 
   private configKoa(): void {
@@ -32,6 +34,11 @@ export class App {
     })
 
     this.koa.context.log = App.log
+  }
+
+  private configPrisma(): void {
+    const prisma = new PrismaClient()
+    this.koa.context.prisma = prisma
   }
 
   public start(): void {

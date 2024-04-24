@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model eventos {
+  id                                             String      @id @db.VarChar(255)
+  titulo                                         String      @db.VarChar(255)
+  descricao                                      String?
+  data_criacao                                   DateTime?   @default(now()) @db.Timestamp(6)
+  data_atualizacao                               DateTime?   @default(now()) @db.Timestamp(6)
+  data_inicio_evento                             DateTime?   @db.Timestamp(6)
+  data_fim_evento                                DateTime?   @db.Timestamp(6)
+  usuario_criacao                                String      @db.VarChar(255)
+  usuario_atualizacao                            String      @db.VarChar(255)
+  usuarios_eventos_usuario_atualizacaoTousuarios usuarios    @relation("eventos_usuario_atualizacaoTousuarios", fields: [usuario_atualizacao], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios_eventos_usuario_criacaoTousuarios     usuarios    @relation("eventos_usuario_criacaoTousuarios", fields: [usuario_criacao], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ingressos                                      ingressos[]
+}
+
+model ingressos {
+  id               String           @id @db.VarChar(255)
+  id_evento        String           @db.VarChar(255)
+  quantidade_total Int
+  eventos          eventos          @relation(fields: [id_evento], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  lote_ingressos   lote_ingressos[]
+}
+
+model lote_ingressos {
+  id                  String    @id @db.VarChar(255)
+  id_ingresso         String    @db.VarChar(255)
+  quantidade          Int
+  data_inicio_periodo DateTime  @db.Date
+  data_fim_periodo    DateTime  @db.Date
+  data_criacao        DateTime? @default(now()) @db.Date
+  valor_unitario      Decimal   @db.Decimal(10, 2)
+  ingressos           ingressos @relation(fields: [id_ingresso], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model pedidos {
+  id                String   @id @db.VarChar(255)
+  id_usuario        String   @db.VarChar(255)
+  data_pedido       DateTime @default(now()) @db.Date
+  quantidade_pedido Int
+  status_pedido     String   @db.VarChar(30)
+  valor_total       Decimal  @db.Decimal(10, 2)
+  usuarios          usuarios @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model usuario_login {
+  id             String   @id @db.VarChar(255)
+  id_usuario     String   @unique @db.VarChar(255)
+  login          String   @db.VarChar(255)
+  senha          String   @db.VarChar(255)
+  salt           String   @db.VarChar(255)
+  dt_atualizacao DateTime @default(now()) @db.Date
+  usuarios       usuarios @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model usuarios {
+  id                                            String         @id @db.VarChar(255)
+  nome                                          String         @db.VarChar(255)
+  email                                         String         @unique @db.VarChar(255)
+  cpf                                           String         @unique @db.VarChar(255)
+  data_criacao                                  DateTime?      @default(now()) @db.Date
+  data_atualizacao                              DateTime?      @default(now()) @db.Date
+  eventos_eventos_usuario_atualizacaoTousuarios eventos[]      @relation("eventos_usuario_atualizacaoTousuarios")
+  eventos_eventos_usuario_criacaoTousuarios     eventos[]      @relation("eventos_usuario_criacaoTousuarios")
+  pedidos                                       pedidos[]
+  usuario_login                                 usuario_login?
+}
