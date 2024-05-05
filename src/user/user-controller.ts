@@ -38,9 +38,22 @@ export class UserController {
       ctx.body = {
         "message": "invalid input. Inform all values as nome, cpf, email and senha"
       }
+      return
     }
 
     ctx.status = 201
     ctx.body = await this.userService.createUser(userRequest)
+  }
+
+  async login(ctx: Context): Promise<void> {
+    const userRequest = ctx.request.body as { email: string, senha: string}
+    if (!userRequest?.email?.length || !userRequest?.senha?.length) {
+      ctx.status = 400
+      ctx.body = {
+        "message": "Missing required inputs!"
+      }
+      return
+    }
+    ctx.body = await this.userService.login(userRequest)
   }
 }

@@ -6,6 +6,7 @@ export const userRoutes = () => {
 
   router.get('/users', controller.getAllUsers.bind(controller));
   router.post('/users', controller.registerUser.bind(controller));
+  router.post('/login', controller.login.bind(controller));
 
   return router.routes();
 };
