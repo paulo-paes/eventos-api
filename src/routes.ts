@@ -1,12 +1,10 @@
 import Router from 'koa-router'
+import { userRoutes } from './user/user-routes';
 
 export const routes = () => {
   const router = new Router();
 
-  router.get('/', async (ctx: any) => {
-    const allUsers = await ctx.prisma.usuarios.findMany()
-    ctx.body = allUsers
-  })
+  router.use(userRoutes())
 
   return router.routes()
 }

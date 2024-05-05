@@ -1,9 +1,10 @@
 import { Repository } from "../core/repository";
 import { LoginInfo } from "./domain/login-info";
-import { User, User } from './domain/user';
+import { User } from './domain/user';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'node:crypto'
 
-export class UsuarioRepository implements Repository<User, string> {
+export class UserRepository implements Repository<User, string> {
   constructor(
     private readonly prismaClient: PrismaClient
   ) { }
@@ -27,13 +28,13 @@ export class UsuarioRepository implements Repository<User, string> {
       )
 
       const user = new User(
-        prismaUser.id,
         prismaUser.nome,
         prismaUser.email,
         prismaUser.cpf,
         prismaUser.data_criacao,
         prismaUser.data_atualizacao,
-        loginInfo
+        loginInfo,
+        prismaUser.id,
       );
 
       result.push(user)
@@ -44,9 +45,27 @@ export class UsuarioRepository implements Repository<User, string> {
   findById(id: string): Promise<User> {
     throw new Error("Method not implemented.");
   }
-  insert(object: User): Promise<User> {
-    throw new Error("Method not implemented.");
+
+  async insert(object: User): Promise<User> {
+    const userId = randomUUID()
+    return this.prismaClient.usuarios.create({
+      data: {
+        id: userId,
+        cpf: object.cpf,
+        nome: object.nome,
+        email: object.email,
+        usuario_login: {
+          create: {
+            id: randomUUID(),
+            salt: "",
+            login: object.email,
+            senha: object.loginInfo.senha,
+          }
+        }
+      }
+    })
   }
+
   update(object: User): Promise<User> {
     throw new Error("Method not implemented.");
   }

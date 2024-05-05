@@ -66,10 +66,10 @@ model usuarios {
   nome                                          String         @db.VarChar(255)
   email                                         String         @unique @db.VarChar(255)
   cpf                                           String         @unique @db.VarChar(255)
-  data_criacao                                  DateTime      @default(now()) @db.Date
-  data_atualizacao                              DateTime      @default(now()) @db.Date
+  data_criacao                                  DateTime?      @default(now()) @db.Timestamptz(6)
+  data_atualizacao                              DateTime?      @default(now()) @db.Timestamptz(6)
   eventos_eventos_usuario_atualizacaoTousuarios eventos[]      @relation("eventos_usuario_atualizacaoTousuarios")
   eventos_eventos_usuario_criacaoTousuarios     eventos[]      @relation("eventos_usuario_criacaoTousuarios")
   pedidos                                       pedidos[]
-  usuario_login                                 usuario_login
+  usuario_login                                 usuario_login?
 }
