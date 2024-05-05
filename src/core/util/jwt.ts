@@ -5,7 +5,7 @@ const KEY = process.env.PRIVATE_KEY
 export const createToken = (claims: object) => {
   const options: SignOptions = {
     algorithm: 'HS256',
-    expiresIn: '2h',
+    expiresIn: '10s',
   }
 
   return jwt.sign(claims, KEY, options)
