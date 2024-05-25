@@ -40,8 +40,39 @@ export class UserRepositoryImpl implements UserRepository {
 
     return result;
   }
-  findById(id: string): Promise<User> {
-    throw new Error("Method not implemented.");
+
+  async findById(id: string): Promise<User> {
+    const prismaUser = await this.prismaClient.usuarios.findFirst({
+      include: {
+        usuario_login: true
+      },
+      where: {
+        id
+      }
+    })
+
+    const loginUser = prismaUser.usuario_login!;
+    const loginInfo = new LoginInfo(
+      loginUser.id,
+      loginUser.id_usuario,
+      loginUser.login,
+      loginUser.senha,
+      loginUser.salt,
+      loginUser.dt_atualizacao
+    );
+
+
+    const user = new User(
+      prismaUser.nome,
+      prismaUser.email,
+      prismaUser.cpf,
+      prismaUser.data_criacao,
+      prismaUser.data_atualizacao,
+      loginInfo,
+      prismaUser.id
+    );
+
+    return user;
   }
 
   async insert(object: User): Promise<User> {

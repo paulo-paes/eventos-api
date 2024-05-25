@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 import parser from 'koa-bodyparser';
 import { routes } from './routes';
 import winston from 'winston';
-import { PrismaClient } from '@prisma/client';
 
 export class App {
   private readonly port: number;
