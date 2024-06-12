@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { Event } from './domain/event';
+import { Event } from './model/event';
 import { EventRepository } from './event-repository';
 
 export class EventRepositoryImpl implements EventRepository {
@@ -48,20 +48,4 @@ export class EventRepositoryImpl implements EventRepository {
 
     return event;
   }
-  insert(object: Event): Promise<Event> {
-    throw new Error('Method not implemented.');
-  }
-  update(object: Event): Promise<Event> {
-    throw new Error('Method not implemented.');
-  }
-  upsert(object: Event): Promise<Event> {
-    throw new Error('Method not implemented.');
-  }
-  delete(object: Event): Promise<Event> {
-    throw new Error('Method not implemented.');
-  }
-  deleteById(id: string): Promise<Event> {
-    throw new Error('Method not implemented.');
-  }
-
 }

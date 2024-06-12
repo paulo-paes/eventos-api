@@ -6,24 +6,6 @@ import { UserResponse } from "./dto/user-response";
 export class UserController {
   constructor(private userService: UserService) {}
 
-  async getAllUsers(ctx: Context): Promise<void> {
-    const users = await this.userService.getAllUsers();
-
-    const response: UserResponse[] = []
-    for (const user of users) {
-      response.push({
-        id: user.id,
-        cpf: user.cpf,
-        nome: user.nome,
-        email: user.email,
-        dataCriacao: user.dataCriacao,
-        dataAtualizacao: user.dataAtualizacao
-      })
-    }
-
-    ctx.body = response
-  }
-
   async registerUser(ctx: Context): Promise<void> {
     const userRequest = ctx.request.body as UserRequest;
 

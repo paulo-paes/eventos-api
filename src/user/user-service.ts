@@ -1,6 +1,6 @@
 import { comparePassword, hashPassword } from "../core/util/hasher";
 import { createToken, verifyToken } from "../core/util/jwt";
-import { User } from "./domain/user";
+import { User } from "./model/user";
 import { LoginRequest } from "./dto/login-request";
 import { UserRequest } from "./dto/user-request";
 import { UserRepository } from "./user-repository";

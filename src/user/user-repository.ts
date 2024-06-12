@@ -1,6 +1,9 @@
-import { Repository } from "../core/repository";
-import { User } from "./domain/user";
+import { User } from "./model/user";
 
-export interface UserRepository extends Repository<User, string> {
+export interface UserRepository {
+  findByEmail(email: string): Promise<User>;
+  findAll(): Promise<User[]>;
+  findById(id: string): Promise<User>;
+  insert(object: User): Promise<User>;
   findByEmail(email: string): Promise<User>;
 }

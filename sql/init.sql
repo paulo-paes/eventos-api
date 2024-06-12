@@ -15,28 +15,11 @@ CREATE TABLE EVENTOS (
 	data_atualizacao TIMESTAMP DEFAULT NOW(),
 	data_inicio_evento TIMESTAMP,
 	data_fim_evento TIMESTAMP,
-	usuario_criacao VARCHAR(255) NOT NULL,
-	usuario_atualizacao VARCHAR(255) NOT NULL,
+	usuario_criacao VARCHAR(255),
+	usuario_atualizacao VARCHAR(255),
+	total_ingressos int,
 	FOREIGN KEY (usuario_criacao) REFERENCES usuarios(id),
 	FOREIGN KEY (usuario_atualizacao) REFERENCES usuarios(id)
-);
-
-CREATE TABLE INGRESSOS (
-	id varchar(255) NOT NULL PRIMARY KEY,
-	id_evento VARCHAR(255) NOT NULL,
-	quantidade_total integer not null,
-	FOREIGN KEY (id_evento) REFERENCES eventos(id)
-);
-
-CREATE TABLE LOTE_INGRESSOS (
-	id varchar(255) NOT NULL PRIMARY KEY,
-	id_ingresso VARCHAR(255) NOT NULL,
-	quantidade integer NOT NULL,
-	data_inicio_periodo DATE NOT NULL,
-	data_fim_periodo DATE NOT NULL,
-	data_criacao TIMESTAMP DEFAULT NOW(),
-	valor_unitario DECIMAL(10, 2) not null,
-	FOREIGN KEY (id_ingresso) REFERENCES ingressos(id)
 );
 
 CREATE TABLE USUARIO_LOGIN (
@@ -52,9 +35,10 @@ CREATE TABLE USUARIO_LOGIN (
 CREATE TABLE PEDIDOS(
 	id VARCHAR(255) NOT NULL PRIMARY KEY,
 	id_usuario VARCHAR(255) NOT NULL,
+	id_evento varchar(255) NOT NULL,
 	data_pedido TIMESTAMP NOT NULL DEFAULT NOW(),
-	quantidade_pedido INTEGER NOT NULL,
-	status_pedido VARCHAR(30) NOT NULL,
-	valor_total decimal(10, 2) NOT NULL,
+	quantidade_pedido INTEGER,
+	status_pedido VARCHAR(30),
+	valor_total decimal(10, 2),
 	FOREIGN KEY (id_usuario) REFERENCES USUARIOS(id)
 );

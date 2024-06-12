@@ -1,5 +1,5 @@
-import { LoginInfo } from "./domain/login-info";
-import { User } from "./domain/user";
+import { LoginInfo } from "./model/login-info";
+import { User } from "./model/user";
 import { PrismaClient } from "@prisma/client";
 import { randomUUID } from "node:crypto";
 import { UserRepository } from "./user-repository";
@@ -125,18 +125,5 @@ export class UserRepositoryImpl implements UserRepository {
     );
 
     return user;
-  }
-
-  update(object: User): Promise<User> {
-    throw new Error("Method not implemented.");
-  }
-  upsert(object: User): Promise<User> {
-    throw new Error("Method not implemented.");
-  }
-  delete(object: User): Promise<User> {
-    throw new Error("Method not implemented.");
-  }
-  deleteById(id: string): Promise<User> {
-    throw new Error("Method not implemented.");
   }
 }

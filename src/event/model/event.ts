@@ -1,4 +1,4 @@
-import { User } from "../../user/domain/user";
+import { User } from "../../user/model/user";
 
 export class Event {
   constructor(
