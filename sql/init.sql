@@ -18,6 +18,7 @@ CREATE TABLE EVENTOS (
 	usuario_criacao VARCHAR(255),
 	usuario_atualizacao VARCHAR(255),
 	total_ingressos int,
+	preco Decimal(10,2),
 	FOREIGN KEY (usuario_criacao) REFERENCES usuarios(id),
 	FOREIGN KEY (usuario_atualizacao) REFERENCES usuarios(id)
 );
