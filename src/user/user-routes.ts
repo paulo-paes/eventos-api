@@ -4,7 +4,7 @@ import { controller } from "./user-factory";
 export const userRoutes = () => {
   const router = new Router();
 
-  router.post('/users', controller.registerUser.bind(controller));
+  router.post('/register', controller.registerUser.bind(controller));
   router.post('/login', controller.login.bind(controller));
 
   return router.routes();

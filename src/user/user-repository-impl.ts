@@ -104,6 +104,7 @@ export class UserRepositoryImpl implements UserRepository {
         email,
       },
     });
+    if (!prismaUser) return null;
     const loginUser = prismaUser.usuario_login!;
     const loginInfo = new LoginInfo(
       loginUser.id,

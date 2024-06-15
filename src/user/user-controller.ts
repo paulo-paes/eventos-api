@@ -36,6 +36,13 @@ export class UserController {
       }
       return
     }
-    ctx.body = await this.userService.login(userRequest)
+    try {
+      ctx.body = await this.userService.login(userRequest)
+    } catch (e) {
+      ctx.status = 401
+      ctx.body = {
+        message: "email ou senha inválidos!"
+      }
+    }
   }
 }

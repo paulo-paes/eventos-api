@@ -10,7 +10,7 @@ export class Event {
     public dataFimEvento: Date,
     public usuarioCriacao: User,
     public usuarioAtualizacao: User,
-    public preco: number,
+    public preco: string,
     public totalIngressos: number,
     public id?: string,
   ) {}

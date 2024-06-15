@@ -26,12 +26,12 @@ export class UserService {
     })
   }
 
-  async login(userRequest: LoginRequest): Promise<any> {
+  async login(userRequest: LoginRequest): Promise<{token: string}> {
     const user = await this.userRepository.findByEmail(userRequest.email)
-    if (!user) return String(false)
+    if (!user) throw new Error('email ou senha inválidos!')
     const isPasswordValid = comparePassword(user.loginInfo.senha, userRequest.senha)
 
-    if (!isPasswordValid) return String(false)
+    if (!isPasswordValid) throw new Error('email ou senha inválidos!')
 
     const token = createToken({
       userId: user.id

@@ -1,5 +1,6 @@
-import { Context } from "koa";
+import { Context } from "../app";
 import { OrderRequest } from "./dto/order-request";
+import { OrderService } from "./order-service";
 
 export class OrderController {
   constructor (private orderService: OrderService) {}
@@ -16,7 +17,11 @@ export class OrderController {
       return
     }
 
-    ctx.status = 201
-    await this.orderService.register(orderRequest)
+    await this.orderService.register(orderRequest, ctx.user)
+    ctx.status = 200
+  }
+
+  async getOrders(ctx: Context) {
+    ctx.body = await this.orderService.listOrders(ctx.user)
   }
 }

@@ -12,27 +12,29 @@ export class OrderService {
   ) {}
 
   async register(orderRequest: OrderRequest, user: User) {
-    const evento = await this.eventoRepository.findById(
-      orderRequest.idEvento
-    )
+    const evento = await this.eventoRepository.findById(orderRequest.idEvento);
 
     if (!evento) {
-      throw new Error('evento não encontrado');
+      throw new Error("evento não encontrado");
     }
 
     const valorTotal = bigDecimal.multiply(
       orderRequest.quantidade,
       evento.preco
-    )
+    );
     const order = new Order(
       user.id,
       orderRequest.idEvento,
       orderRequest.quantidade,
       bigDecimal.round(valorTotal, 2)
-    )
-    evento.totalIngressos -= 1
+    );
+    evento.totalIngressos -= orderRequest.quantidade;
 
-    await this.orderRepository.insert(order)
-    await this.eventoRepository.update(evento)
+    await this.orderRepository.insert(order);
+    await this.eventoRepository.update(evento);
+  }
+
+  async listOrders(user: User) {
+    return this.orderRepository.findByUser(user)
   }
 }
