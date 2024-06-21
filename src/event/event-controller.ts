@@ -43,6 +43,14 @@ export class EventController {
       return
     }
 
+    if (!eventRequest.preco.match(/^\d+(\.\d{1,2})?$/)) {
+      ctx.body = {
+        message: "formato incorreto!",
+      }
+      ctx.status = 400
+      return
+    }
+
     ctx.body = await this.eventService.insert(eventRequest, ctx.user)
     ctx.status = 201
 

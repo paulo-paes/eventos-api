@@ -6,5 +6,6 @@ export class Order {
     public valorTotal: string,
     public dataPedido?: Date,
     public statusPedido?: string,
+    public nomeEvento?: string,
   ) {}
 }

@@ -44,12 +44,12 @@ export class UserRepositoryImpl implements UserRepository {
   async findById(id: string): Promise<User> {
     const prismaUser = await this.prismaClient.usuarios.findFirst({
       include: {
-        usuario_login: true
+        usuario_login: true,
       },
       where: {
-        id
-      }
-    })
+        id,
+      },
+    });
 
     const loginUser = prismaUser.usuario_login!;
     const loginInfo = new LoginInfo(
@@ -60,7 +60,6 @@ export class UserRepositoryImpl implements UserRepository {
       loginUser.salt,
       loginUser.dt_atualizacao
     );
-
 
     const user = new User(
       prismaUser.nome,
@@ -77,6 +76,15 @@ export class UserRepositoryImpl implements UserRepository {
 
   async insert(object: User): Promise<User> {
     const userId = randomUUID();
+    const user = await this.prismaClient.usuarios.findFirst({
+      where: {
+        OR: [{ email: object.email }, { cpf: object.cpf }],
+      },
+    });
+
+    if (user) {
+      throw new Error("Email ou CPF devem serem unicos");
+    }
     return this.prismaClient.usuarios.create({
       data: {
         id: userId,

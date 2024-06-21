@@ -1,7 +1,7 @@
 import { Context } from "koa";
 import { UserService } from "./user-service";
 import { UserRequest } from "./dto/user-request";
-import { UserResponse } from "./dto/user-response";
+import { App } from "../app";
 
 export class UserController {
   constructor(private userService: UserService) {}
@@ -22,9 +22,16 @@ export class UserController {
       }
       return
     }
-
-    ctx.status = 201
-    ctx.body = await this.userService.createUser(userRequest)
+    try {
+      ctx.body = await this.userService.createUser(userRequest)
+      ctx.status = 201
+    } catch (e) {
+      App.log.error('error', e)
+      ctx.status = 400
+      ctx.body = {
+        message: 'Email e CPF devem ser unicos'
+      }
+    }
   }
 
   async login(ctx: Context): Promise<void> {
@@ -39,6 +46,7 @@ export class UserController {
     try {
       ctx.body = await this.userService.login(userRequest)
     } catch (e) {
+      console.log(e)
       ctx.status = 401
       ctx.body = {
         message: "email ou senha inválidos!"

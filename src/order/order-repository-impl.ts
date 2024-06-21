@@ -44,7 +44,8 @@ export class OrderRepositoryImpl implements OrderRepository {
           order.quantidade_pedido,
           order.valor_total.toString(),
           order.data_pedido,
-          order.status_pedido
+          order.status_pedido,
+          (await this.prismaClient.eventos.findFirst({ where: { id: order.id_evento } })).titulo
         )
       );
     }

@@ -6,7 +6,11 @@ import { randomUUID } from 'node:crypto';
 export class EventRepositoryImpl implements EventRepository {
   constructor(private readonly prismaClient: PrismaClient) {}
   async findAll(): Promise<Event[]> {
-    const prismaEvents = await this.prismaClient.eventos.findMany()
+    const prismaEvents = await this.prismaClient.eventos.findMany({
+      orderBy: {
+        data_criacao: 'desc'
+      }
+    })
     const result: Event[] = []
 
     for (const prismaEvent of prismaEvents) {
